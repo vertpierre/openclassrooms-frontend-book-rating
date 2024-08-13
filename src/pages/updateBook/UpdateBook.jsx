@@ -33,12 +33,14 @@ function UpdateBook() {
 
   return (
     <div className="content-container">
-      <BackArrow />
       <div className={styles.Container}>
+        <BackArrow />
         {!created ? (
           <>
-            <h1>Modifier votre livre</h1>
-            <p>Vous pouvez modifier tous les champs sauf la note donnée</p>
+            <div className={styles.Title}>
+              <h1>Modifier votre livre</h1>
+              <p>Vous pouvez modifier tous les champs sauf la note donnée</p>
+            </div>
             <BookForm book={book} validate={setCreated} />
           </>
         ) : (
@@ -46,7 +48,9 @@ function UpdateBook() {
             <h1>Merci!</h1>
             <p>votre livre a bien été mis à jour</p>
             <img src={bookAdd} alt="Livre mis à jour" />
-            <Link to="/" className="button">Retour à l&apos;accueil</Link>
+            <Link to="/" className="button">
+              Retour à l&apos;accueil
+            </Link>
           </div>
         )}
       </div>

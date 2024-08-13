@@ -8,9 +8,13 @@ import { useFilePreview } from '../../../lib/customHooks';
 import addFileIMG from '../../../images/add_file.png';
 import styles from './BookForm.module.css';
 import { updateBook, addBook } from '../../../lib/common';
+import Notification from '../../Notification/Notification';
 
 function BookForm({ book, validate }) {
-  const userRating = book ? book.ratings.find((elt) => elt.userId === localStorage.getItem('userId'))?.grade : 0;
+  const userRating = book
+    ? book.ratings.find((elt) => elt.userId === localStorage.getItem('userId'))
+      ?.grade
+    : 0;
 
   const [rating, setRating] = useState(0);
 
@@ -18,12 +22,15 @@ function BookForm({ book, validate }) {
   const {
     register, watch, formState, handleSubmit, reset,
   } = useForm({
-    defaultValues: useMemo(() => ({
-      title: book?.title,
-      author: book?.author,
-      year: book?.year,
-      genre: book?.genre,
-    }), [book]),
+    defaultValues: useMemo(
+      () => ({
+        title: book?.title,
+        author: book?.author,
+        year: book?.year,
+        genre: book?.genre,
+      }),
+      [book],
+    ),
   });
   useEffect(() => {
     reset(book);
@@ -43,11 +50,33 @@ function BookForm({ book, validate }) {
     }
   }, [formState]);
 
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = (type, message) => {
+    const notificationId = Date.now(); // Use timestamp as a simple unique id
+    setNotifications((prev) => [...prev, { notificationId, type, message }]);
+
+    // Automatically remove the notification after 3 seconds
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((notif) => notif.notificationId !== notificationId));
+    }, 3000);
+  };
+
   const onSubmit = async (data) => {
+    // Check for missing required fields
+    const requiredFields = ['title', 'author', 'year', 'genre'];
+    const missingFields = requiredFields.filter((field) => !data[field]);
+
+    if (missingFields.length > 0) {
+      addNotification('error', 'Veuillez remplir tous les champs');
+      return;
+    }
+
     // When we create a new book
     if (!book) {
       if (!data.file[0]) {
-        alert('Vous devez ajouter une image');
+        addNotification('error', 'Vous devez ajouter une image');
+        return;
       }
       if (!data.rating) {
         /* eslint-disable no-param-reassign */
@@ -55,17 +84,17 @@ function BookForm({ book, validate }) {
         /* eslint-enable no-param-reassign */
       }
       const newBook = await addBook(data);
-      if (!newBook.error) {
+      if (newBook && !newBook.error) {
         validate(true);
       } else {
-        alert(newBook.message);
+        addNotification('error', 'Une erreur est survenue lors de l\'ajout du livre');
       }
     } else {
       const updatedBook = await updateBook(data, data.id);
-      if (!updatedBook.error) {
+      if (updatedBook && !updatedBook.error) {
         navigate('/');
       } else {
-        alert(updatedBook.message);
+        addNotification('error', 'Une erreur est survenue lors de la mise à jour du livre');
       }
     }
   };
@@ -73,6 +102,14 @@ function BookForm({ book, validate }) {
   const readOnlyStars = !!book;
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.Form}>
+      {notifications.map(({ notificationId, type, message }) => (
+        <Notification
+          key={notificationId}
+          type={type}
+          message={message}
+          location="floating"
+        />
+      ))}
       <input type="hidden" id="id" {...register('id')} />
       <label htmlFor="title">
         <p>Titre du livre</p>
@@ -110,7 +147,6 @@ function BookForm({ book, validate }) {
               <p>Ajouter une image</p>
             </>
           )}
-
         </div>
         <input {...register('file')} type="file" id="file" />
       </label>
@@ -129,10 +165,12 @@ BookForm.propTypes = {
     year: PropTypes.number,
     imageUrl: PropTypes.string,
     genre: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.string,
+        grade: PropTypes.number,
+      }),
+    ),
     averageRating: PropTypes.number,
   }),
   validate: PropTypes.func,

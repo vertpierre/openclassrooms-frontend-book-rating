@@ -7,6 +7,7 @@ import { useUser } from '../../lib/customHooks';
 import { storeInLocalStorage } from '../../lib/common';
 import { ReactComponent as Logo } from '../../images/Logo.svg';
 import styles from './SignIn.module.css';
+import Notification from '../../components/Notification/Notification';
 
 function SignIn({ setUser }) {
   const navigate = useNavigate();
@@ -18,7 +19,17 @@ function SignIn({ setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [notification, setNotification] = useState({ error: false, message: '' });
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = (type, message) => {
+    const notificationId = Date.now();
+    setNotifications((prev) => [...prev, { notificationId, type, message }]);
+
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((notif) => notif.notificationId !== notificationId));
+    }, 3000);
+  };
+
   const signIn = async () => {
     try {
       setIsLoading(true);
@@ -31,17 +42,14 @@ function SignIn({ setUser }) {
         },
       });
       if (!response?.data?.token) {
-        setNotification({ error: true, message: 'Une erreur est survenue' });
-        console.log('Something went wrong during signing in: ', response);
+        addNotification('error', 'Une erreur est survenue');
       } else {
         storeInLocalStorage(response.data.token, response.data.userId);
         setUser(response.data);
         navigate('/');
       }
     } catch (err) {
-      console.log(err);
-      setNotification({ error: true, message: err.message });
-      console.log('Some error occured during signing in: ', err);
+      addNotification('error', err.response?.data?.error || 'Une erreur est survenue');
     } finally {
       setIsLoading(false);
     }
@@ -59,34 +67,40 @@ function SignIn({ setUser }) {
         },
       });
       if (!response?.data) {
-        console.log('Something went wrong during signing up: ', response);
+        addNotification('error', 'Une erreur est survenue');
         return;
       }
-      setNotification({ error: false, message: 'Votre compte a bien été créé, vous pouvez vous connecter' });
+      addNotification('success', 'Votre compte a bien été créé, vous pouvez vous connecter');
     } catch (err) {
-      setNotification({ error: true, message: err.message });
-      console.log('Some error occured during signing up: ', err);
+      addNotification('error', err.response?.data?.error === 'Invalid email format' ? 'Format de mail invalide' : 'Une erreur est survenue');
     } finally {
       setIsLoading(false);
     }
   };
-  const errorClass = notification.error ? styles.Error : null;
+
   return (
     <div className={`${styles.SignIn} container`}>
       <Logo />
-      <div className={`${styles.Notification} ${errorClass}`}>
-        {notification.message.length > 0 && <p>{notification.message}</p>}
-      </div>
+      {notifications.map(({ notificationId, type, message }) => (
+        <Notification
+          key={notificationId}
+          type={type}
+          message={message}
+          location="floating"
+        />
+      ))}
       <div className={styles.Form}>
-        <label htmlFor={email}>
+        <label htmlFor="email">
           <p>Adresse email</p>
           <input
-            className=""
+            className={styles.Input}
             type="text"
             name="email"
             id="email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
           />
         </label>
         <label htmlFor="password">
@@ -97,7 +111,9 @@ function SignIn({ setUser }) {
             name="password"
             id="password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
         </label>
         <div className={styles.Submit}>
@@ -110,11 +126,9 @@ function SignIn({ setUser }) {
             onClick={signIn}
           >
             {isLoading ? <div className="" /> : null}
-            <span>
-              Se connecter
-            </span>
+            <span>Se connecter</span>
           </button>
-          <span>OU</span>
+          <span>ou</span>
           <button
             type="submit"
             className="
@@ -123,16 +137,12 @@ function SignIn({ setUser }) {
             bg-gray-800  text-white hover:bg-gray-800"
             onClick={signUp}
           >
-            {
-                isLoading
-                  ? <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" /> : null
-              }
-            <span>
-              {'S\'inscrire'}
-            </span>
+            {isLoading ? (
+              <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" />
+            ) : null}
+            <span>S&apos;inscrire</span>
           </button>
         </div>
-
       </div>
     </div>
   );
@@ -141,4 +151,5 @@ function SignIn({ setUser }) {
 SignIn.propTypes = {
   setUser: PropTypes.func.isRequired,
 };
+
 export default SignIn;

@@ -1,68 +1,85 @@
-.BookItem{
-    display: flex;
-    text-decoration: none;
-    color: inherit;
-    max-width: 360px;
-    width: 80%;
-    align-items: center;
-    margin-bottom: 85px;
+.BookItem {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+  max-width: 360px;
 }
 .BookItem article {
-    display: flex;
-    align-items: center;
+  display: flex;
 }
 
-
-.BookItem img {
-    border-radius: 5px;
+.BookImageContainer {
+  background-color: #f2e3ce;
+  height: 260px;
+  width: 206px;
+  overflow: hidden;
+  border-radius: 5px;
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+}
+.BookImageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .BookItem h2 {
-    font-size: 18px;
-    font-weight: 700;
-    font-family: "Libre Baskerville", serif;
-    margin-bottom: 10px ;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
+  word-break: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .BookImage {
-    width: 206px;
-    height: 260px;
-    object-position: center;
-    object-fit: contain;
+  width: 206px;
+  height: 260px;
+  object-position: center;
+  object-fit: contain;
 }
 .BookItem h3 {
-    font-size: 18px;
-    font-weight: 700;
-    font-family: "Libre Baskerville", serif;
-    margin-bottom: 10px ;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 10px;
 }
 .BookItem p {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: #796157;
-    margin-bottom: 10px ;
-}
-.full {
-    color: #D9A963;
-    font-size: 23px;
-}
-.empty {
-    color : #F2E3CE;
-    font-size: 23px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #796157;
+  margin-bottom: 10px;
 }
 .BookInfo {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    margin-left: 18px;
-}
-.Rating{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 18px;
+  margin-top: 30px;
 }
 
-@media all and (max-width: 600px) {
-    .BookItem img {
-        width: 50%;
-    }
+.Rating {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 22px;
+}
+
+.full {
+  color: #d9a963;
+  font-size: 20px;
+}
+.empty {
+  color: #f2e3ce;
+  font-size: 20px;
+}
+
+@media (max-width: 720px) {
+  .BookItem article {
+    flex-direction: column;
+    align-items: center;
+  }
+  .BookInfo {
+    margin-left: 0;
+    width: calc(200px + 4vw);
+  }
 }

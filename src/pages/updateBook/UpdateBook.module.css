@@ -1,16 +1,26 @@
 .Container {
-    background-color: #FFFFFF;
-    margin: auto;
-    border-radius: 7px;
-    box-shadow:  0 4px 34px rgba(0, 0, 0, 0.07);
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-block: 80px;
+  background-color: #ffffff;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 4px 34px hsla(20, 100%, 30%, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-block: 40px 80px;
+  padding-inline: min(100px, calc(6vw + 20px));
 }
 
-.Container p {
-    font-family: "Libre Baskerville", serif;
-    font-size: 16px;
+.Title {
+  margin-top: 60px;
+}
+
+.Title h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Title p {
+  text-align: center;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 16px;
 }

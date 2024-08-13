@@ -1,0 +1,100 @@
+.Notification {
+  z-index: 1000;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 40px;
+  margin-inline: auto;
+  margin-block: 40px;
+  border-radius: 5px;
+  gap: 10px;
+  font-family: "DM Sans", sans-serif;
+  background-color: #f9f3ee;
+  color: #796157;
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.Notification span {
+  display: inline-block;
+  animation: wave 0.8s infinite ease-in-out;
+  margin-left: 0.05em;
+}
+
+.Notification span:first-child {
+  margin-left: 10px;
+}
+
+.Notification span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.Notification span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.1em);
+  }
+}
+
+.notificationSuccess {
+  background-color: rgba(210, 255, 200);
+  h5 {
+    color: rgba(0, 155, 0);
+  }
+}
+
+.notificationError {
+  background-color: rgba(255, 210, 200);
+  h5 {
+    color: rgba(155, 0, 0);
+  }
+}
+
+.floating {
+  position: fixed;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  animation: fadeFloat 0.4s ease-in-out;
+}
+
+@keyframes fadeFloat {
+  0% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.inner {
+  position: relative;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Notification h5 {
+  font-family: "Libre Baskerville", serif;
+  font-size: 2rem;
+}
