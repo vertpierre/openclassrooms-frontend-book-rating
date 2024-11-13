@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAuthenticatedUser, getBestRatedBooks } from './common';
 
-// eslint-disable-next-line import/prefer-default-export
 export function useUser() {
   const [connectedUser, setConnectedUser] = useState(null);
   const [auth, setAuth] = useState(false);
@@ -35,7 +34,6 @@ export function useBestRatedBooks() {
 }
 
 export function useFilePreview(file) {
-  const fileInput = file[0] ?? [];
   const [imgSrc, setImgSrc] = useState(null);
 
   useEffect(() => {
@@ -45,8 +43,13 @@ export function useFilePreview(file) {
       if (newUrl !== imgSrc) {
         setImgSrc(newUrl);
       }
+
+      // Cleanup function to revoke the URL when component unmounts
+      return () => {
+        URL.revokeObjectURL(newUrl);
+      };
     }
-  }, [fileInput[0]?.name]);
+  }, [file, imgSrc]); // Added all required dependencies
 
   return [imgSrc, setImgSrc];
 }

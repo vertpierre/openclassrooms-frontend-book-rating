@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { displayStars } from '../../../lib/functions';
 import styles from './BookItem.module.css';
 
 function BookItem({ book, size }) {
+  const [imageError, setImageError] = useState(false);
+
   let title;
   switch (size) {
     case 2:
@@ -17,10 +19,28 @@ function BookItem({ book, size }) {
       title = <h2>{book.title}</h2>;
       break;
   }
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <Link to={`/livre/${book.id}`} className={styles.BookItem}>
       <article>
-        <img className={styles.BookImage} src={book.imageUrl} alt={`${book.title}, ${book.author} - ${book.year}`} />
+        <div className={styles.BookImageContainer}>
+          {!imageError ? (
+            <img
+              className={styles.BookImage}
+              src={book.imageUrl}
+              alt={`${book.title}, ${book.author} - ${book.year}`}
+              onError={handleImageError}
+            />
+          ) : (
+            <div className={styles.ImagePlaceholder}>
+              Image non disponible
+            </div>
+          )}
+        </div>
         <div className={styles.BookInfo}>
           <div className={styles.Rating}>
             {displayStars(book.averageRating)}
@@ -45,11 +65,14 @@ BookItem.propTypes = {
     year: PropTypes.number,
     imageUrl: PropTypes.string,
     genre: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.string,
+        grade: PropTypes.number,
+      }),
+    ),
     averageRating: PropTypes.number,
   }).isRequired,
 };
+
 export default BookItem;

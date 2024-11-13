@@ -1,81 +1,87 @@
-.Form{
-    background-color: #F9F3EE;
-    width: 30%;
-    margin: auto;
-    padding: 50px;
-    align-items: center;
-    margin-block: 50px;
-
+.Form {
+  background-color: #f9f3ee;
+  width: calc(100% - 100px);
+  max-width: 500px;
+  margin: auto;
+  padding: 50px;
+  align-items: center;
+  margin-block: 60px;
+  border-radius: 5px;
 }
-.Form, .Form label {
-    display: flex;
-    flex-direction: column;
-    font-family: "DM Sans", sans-serif;
-    font-size: 18px;
-    line-height: 24px;
-
+.Form,
+.Form label {
+  display: flex;
+  flex-direction: column;
+  font-family: "DM Sans", sans-serif;
+  font-size: 18px;
+  line-height: 24px;
 }
 
-.Form input[type="file"]{
- display: none;
+.Form input[type="file"] {
+  display: none;
 }
 
 .Form img {
-    width: 83px;
-    height: 83px;
-    object-fit: cover;
-    object-position: center;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  object-position: center;
 }
 .Form label {
-    width: 100%;
+  width: 100%;
 }
 .Form label p {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .Form input {
-    height: 64px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 35px;
-
+  height: 64px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 35px;
+  border-radius: 3px;
+  border: 2px solid #F2E3CE;
+  padding-left: 10px;
 }
 
+.Stars {
+  display: flex;
+  gap: 5px;
+  width: min-content;
+  margin-bottom: 40px;
+}
 
-.Stars, .Stars label{
-    display: flex;
-    flex: 1;
-    margin-bottom: 22px;
-    width: 50%;
-    align-items: center;
+.Stars, 
+.Stars label {
+  cursor: pointer;
 }
 
 .Stars input {
-    position: absolute;
-    left: -10000px
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .AddImage {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    padding: 43px 81px;
-    border: dashed 1px #D9A963;
-    margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 30px;
+  border: dashed 2px #F2E3CE;
+  margin-bottom: 40px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .AddImage img {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .AddImage p {
-    color: #929292;
-    font-size: 16px;
-}
-
-@media all and (max-width: 1300px) {
-    .Form {
-        width: 70%;
-    }
+  color: #929292;
+  font-size: 16px;
+  font-family: "DM Sans", sans-serif;
+  margin-top: 15px;
 }
