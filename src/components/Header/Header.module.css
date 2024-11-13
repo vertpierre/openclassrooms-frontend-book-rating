@@ -1,50 +1,48 @@
-.Header{
-    font-family: 'Libre Baskerville', serif;
-    background-color: #FFFFFF;
-    min-height: 91px;
-    display: flex;
-    align-items: center;
+.Header {
+  font-family: "Libre Baskerville", serif;
+  background-color: #ffffff;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  padding-inline: 60px;
 }
 
 .Header div {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .Header p {
-    font-size: 20px;
+  font-size: 20px;
 }
 
-.Header ul {
-    display: flex;
+.link {
+  text-decoration: none;
+  color: black;
+  background-color: transparent;
+  font-size: 18px;
+  font-family: "Libre Baskerville", serif;
+  transition: all 0s ease;
 }
 
-.Header ul li {
-    padding-inline: 20px;
-    list-style-type: none;
+.link:hover {
+  background-color: transparent;
+  color: #002f34;
 }
 
-.Header ul li a {
-    text-decoration: none;
-    color: black ;
-}
+@media all and (max-width: 960px) {
+  .Header div {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.Header a.activeLink {
-    font-weight: bold;
-}
+  .Header img {
+    margin-top: 20px;
+  }
 
-@media all and (max-width: 600px) {
-    .Header div {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .Header img {
-        margin-top: 20px;
-        width: 50%;
-    }
-
-    .Header ul li {
-        padding-block: 20px;
-    }
+  .Header ul li {
+    padding-block: 20px;
+    white-space: nowrap;
+  }
 }

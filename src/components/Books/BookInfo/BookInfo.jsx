@@ -12,7 +12,7 @@ function BookInfo({ book }) {
       <p className={styles.Genre}>{book.genre}</p>
       <div className={styles.Rating}>
         <div>{displayStars(book.averageRating)}</div>
-        <p>{`${book.averageRating}/5`}</p>
+        <p>{`${Math.round(book.averageRating * 10) / 10}/5`}</p>
       </div>
     </div>
   );
@@ -27,10 +27,12 @@ BookInfo.propTypes = {
     year: PropTypes.number,
     imageUrl: PropTypes.string,
     genre: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.string,
+        grade: PropTypes.number,
+      }),
+    ),
     averageRating: PropTypes.number,
   }).isRequired,
 };
